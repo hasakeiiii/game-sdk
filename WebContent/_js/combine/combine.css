@@ -1,0 +1,7 @@
+/* show tip img style */
+#tooltip {
+	BORDER-RIGHT: #111 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #111 1px solid; PADDING-LEFT: 5px; Z-INDEX: 3000; PADDING-BOTTOM: 5px; BORDER-LEFT: #111 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: #111 1px solid; POSITION: absolute; BACKGROUND-COLOR: #333; opacity: 0.95
+}
+#tooltip DIV {
+	MARGIN: 0px; WIDTH: 146px; height:111px; COLOR: #ccc
+}

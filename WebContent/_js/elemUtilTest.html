@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>测试Demo</title>
+<link rel="stylesheet" href="../_css/back.css" type="text/css"/>
+</head>
+<body>
+      <table  width="100%">
+         <tr style="height: 30px;">
+           <td style="color: blue;font-size: 14px;">
+            (checkbox)相关方法测试 
+           </td>
+         </tr>
+         <tr>
+           <td>
+              全选
+           <input name="checkbox" type="checkbox" id="js_selectAll" onclick="allSelect('TableColor')" /> 
+              反选
+           <input name="checkbox" type="checkbox" id="js_selectOpp" onclick="oppSelect('TableColor')"/>
+           &nbsp;&nbsp;
+           <input type="button" onclick="javascript:alert(getValueStr('TableColor'))" value="获得选中checkbox的值getValueStr()"/>
+           &nbsp;&nbsp;
+           <input type="button" onclick="javascript:alert(getCheckNum('TableColor'))" value="选中checkbox数量getCheckNum()"/>
+           </td>
+         </tr>
+         <tr>
+           <td>
+              <input type="button" value="获得选中checkbox的ID值getIdStr()" onclick="javaScript:alert(getIdStr('TableColor'))"/>&nbsp;&nbsp;
+              <input type="button" value="用给定的key('1,2,3')值初始化initCheck()" onclick="initCheck('checkbox','1,2,3')"/>
+           </td>
+         </tr>
+      </table>
+      <table id="TableColor" width="100%" border="0">
+         <tr style="height: 25px;">
+             <td><input type="checkbox" id="js_selectAll1" name="checkbox" value="100" onclick="allSelect('TableColor')"/>&nbsp;&nbsp;
+              <input type="checkbox" id="js_selectOpp1" name="checkbox" value="100" onclick="oppSelect('TableColor')"/>   
+                  序号</td>
+             <td>测试Name</td>
+         </tr>
+         <tr style="height: 25px;">
+            <td><input type="checkbox" id="c1" name="checkbox" value="1">1</input></td>
+            <td>Name1</td>
+         </tr>
+          <tr style="height: 25px;">
+            <td><input type="checkbox" id="c2" name="checkbox" value="2">2</input></td>
+            <td>Name2</td>
+         </tr>
+          <tr style="height: 25px;">
+            <td><input type="checkbox" id="c3" name="checkbox" value="3">3</input></td>
+            <td>Name3</td>
+         </tr>
+          <tr style="height: 25px;">
+            <td><input type="checkbox" id="c4" name="checkbox" value="4">4</input></td>
+            <td>Name4</td>
+         </tr>
+          <tr style="height: 25px;">
+            <td><input type="checkbox" id="c5" name="checkbox" value="5">5</input></td>
+            <td>Name5</td>
+         </tr>
+          <tr style="height: 25px;">
+            <td><input type="checkbox" id="c6" name="checkbox" value="6">6</input></td>
+            <td>Name6</td>
+         </tr>
+          <tr style="height: 25px;">
+            <td><input type="checkbox" id="c7" name="checkbox" value="7">7</input></td>
+            <td>Name7</td>
+         </tr>
+         <tr style="height: 25px;">
+            <td><input type="checkbox" id="c8" name="checkbox" value="8">8</input></td>
+            <td>Name8</td>
+         </tr>
+         <tr style="height: 25px;">
+            <td><input type="checkbox" id="c9" name="checkbox" value="9">9</input></td>
+            <td>Name9</td>
+         </tr>
+         <tr style="height: 25px;">
+            <td><input type="checkbox" id="c10" name="checkbox" value="10">10</input></td>
+            <td>Name10</td>
+         </tr>
+      </table>
+      <br/>
+      <table width="100%" border="0">
+         <tr style="height: 30px;">
+           <td style="color: blue;font-size: 14px;">(radio)相关方法测试</td>
+         </tr>
+         <tr>
+           <td>
+             <input type="button" value="获得选中radio的值getRadio()" onclick="javaScript:alert(getRadio('radiobox'))"/>
+             &nbsp;&nbsp;<input type="button" value="获得选中radio的ID值getRadioId()" onclick="javaScript:alert(getRadioId('radiobox'))"/>
+             &nbsp;&nbsp;<input type="button" value="用('2')初始化radioinitRadio()" onclick="initRadio('radiobox','图片')"/>
+           </td>
+         </tr>
+         <tr>
+            <td>
+             <input type="radio" id="r1" name="radiobox" value="视频"/>视频
+             <input type="radio" id="r2" name="radiobox" value="图片"/>图片
+             <input type="radio" id="r3" name="radiobox" value="铃声"/>铃声
+             <input type="radio" id="r4" name="radiobox" value="游戏"/>游戏
+             <input type="radio" id="r5" name="radiobox" value="彩铃"/>彩铃
+            </td>
+         </tr>
+      </table>
+      <table width="100%" border="0">
+          <tr style="height: 30px;">
+           <td style="color: blue;font-size: 14px;">(select)相关方法测试</td>
+         </tr>
+         <tr style="height: 35px;">
+         <td>
+            <input type="button" value="添加select选项且用key='1'初始化被选项fillSelect()" onclick="fillSelect('testSelect',['9','10'],['邮箱','漫画'],'8')"/>&nbsp;
+            <input type="button" value="key='4' 初始化被选中项initSelect()" onclick="initSelect('testSelect','4')"/>
+         </td>
+         </tr>
+         <tr>
+           <td>
+             <input type="button" value="获得选中项的值getSelect()" onclick="javascript:alert(getSelect('testSelect'))"/>&nbsp;
+             <input type="button" value="添加select选项并初始化fillSelectValue()" onclick="fillSelect('testSelect',['9','10'],['邮箱','漫画'],'9')"/>
+           </td>
+         </tr>
+         <tr>
+            <td>
+             <select id="testSelect" name="testSelect" style="width: 100px;">
+	               <option value="-1">----请选择----</option>
+	               <option value="1">视频</option>
+	               <option value="2">图片</option>
+	               <option value="3">铃声</option>
+	               <option value="4">游戏</option>
+	               <option value="5">彩铃</option>
+	               <option value="6">音乐</option>
+	               <option value="7">美图</option>
+	               <option value="8">动画</option>
+             </select>
+            </td>
+         </tr>
+      </table>
+		<script type="text/javascript" src="elemUtil.js"></script>
+</body>
+</html>

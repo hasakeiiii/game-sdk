@@ -1,0 +1,327 @@
+package sdkReq;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import model.App;
+import model.MmPay;
+import model.NetFee;
+import model.Pay;
+import net.sf.json.JSONObject;
+import util.ConstValue;
+import util.DateUtil;
+import util.DebuUtil;
+import util.FileUtil;
+import util.StringUtil;
+import dao.ActivateDao;
+import dao.AppDao;
+import dao.ChannelDataDao;
+import dao.FeeDataDao;
+import dao.MmPayDao;
+import dao.PayDao;
+
+public class sapayOrder extends HttpServlet{
+
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4078171661286759276L;
+
+	public int  HandleReq_O(model.Pay obj)
+	{
+		int ret = ConstValue.Fail;
+		Pay pay = null;
+		PayDao dao = new PayDao();
+		
+		if(obj.pay_type.equals("mmpay"))
+		{
+			MmPayDao mmpaydao = new MmPayDao();
+			MmPay mmpay= null;
+			if(!StringUtil.is_nullString(obj.thir_pay_id))
+			{
+			    mmpay = mmpaydao.getPayRecord(obj.thir_pay_id);
+			}
+			if((mmpay != null) && (mmpay.getRet() >= 0))
+			{
+				if(mmpay.amount != obj.amount)
+				{
+					obj.amount = mmpay.amount;
+				}
+				DebuUtil.log("修改支付状态 ");
+				pay = dao.getPayRecord(mmpay.getTradeNo(),"mmpay");		
+				if(pay == null)
+				{
+					obj.state = 1;
+				}
+				else
+				{
+					AppDao appdao = new AppDao();
+					App appinfo = appdao.getAppRecord(obj.game_id);
+	    	    	
+					//if(StringUtil.is_nullString(appinfo.getUrl()))
+					{
+						pay.device_id=obj.device_id;	    	    	
+		    	    	pay.game_id=obj.game_id;
+		    	    	pay.server_id=obj.server_id;
+		    	    	pay.cp_order_id=obj.cp_order_id;
+		    	    	pay.username=obj.username;	
+		    	    	pay.packet_id = obj.packet_id;	    	    		
+		    	    	pay.ratio=obj.ratio;
+		    	    	pay.coin_name=obj.coin_name;
+		    	    	pay.pay_type = obj.pay_type;	    	    	
+		    	    	pay.type = obj.type;
+		    	    	pay.state = 1;
+		    	    	pay.business_no = obj.business_no;
+		    	    	pay.channel_no = obj.channel_no;
+		    	    	dao.getPayPacketID(pay);
+		    	    	dao.edit(pay);
+					}
+				}
+				
+			}
+		}
+		else //联通电信
+		{
+			/////////////////////////////////////////////////////////
+			//if(obj.amount < 2000)
+			// obj.state = 1;
+			////////////////////////////////////////////////////
+		}
+		
+		if(pay == null)
+		{
+			//if(1)
+			{
+				
+				if(obj.pay_type.equals("mmpay"))
+				{
+					
+					if(!StringUtil.is_nullString(obj.thir_pay_id) )//有交易号
+					{
+					    ret = dao.pay(obj);
+					}
+					else//没有交易号，只是请求计费
+					{										
+						ChannelDataDao channelDataDao = new ChannelDataDao();
+						channelDataDao.payReq(obj);
+						
+						if(ConstValue.bNew == 1)
+						{
+							FeeDataDao feeDataDao = new FeeDataDao();
+							feeDataDao.pay(obj,true);
+						}
+					}						
+				}
+				else//联通和电信
+				{
+					ret = dao.pay(obj);
+				}
+				if(obj.state == 1)
+				{
+					dao.payNotisfy(obj);
+				}
+			}
+			
+		}
+		
+	    return ret;
+	}
+	
+	public int  HandleReq(model.Pay obj)
+	{
+		int ret = ConstValue.Fail;
+		Pay pay = null;
+		PayDao dao = new PayDao();
+		
+		if(obj.state == 0)
+		{
+			DebuUtil.log("用户点击了支付 ");
+			if(obj.pay_type.equals(Pay.WoPayType) || obj.pay_type.equals(Pay.OpenPayType))
+			{		
+				obj.order_amount = obj.amount;
+				obj.amount = 0;	//实付金额清0
+				
+			}
+			
+			ActivateDao activateDao = new ActivateDao();
+			model.Activate activate = activateDao.getActivateRecord(obj.device_id,obj.game_id);
+			if(activate != null)
+			{
+				String code = GetAmountIndex.getRegionCode(activate.addr, "");
+				String province = GetAmountIndex.getRegionCode("", code);
+				
+				String curdate = DateUtil.getDate();
+				long datedif = 0;
+				datedif = DateUtil.getDayDiff(activate.date, curdate);
+				obj.ext = province+"_"+datedif;
+				
+				//if(ConstValue.DEBUG == 1)
+				{
+					 DebuUtil.log("用户省份="+obj.ext);
+				}
+			}
+			
+			ret = dao.pay(obj);
+			ChannelDataDao channelDataDao = new ChannelDataDao();
+			channelDataDao.payReq(obj);
+			if(ConstValue.bNew == 1)
+			{
+				FeeDataDao feeDataDao = new FeeDataDao();
+				feeDataDao.pay(obj,true);
+			}
+			
+		}
+		else if(obj.state == 1)
+		{
+			
+			DebuUtil.log("用户支付 成功");
+			pay = dao.getPayRecordByCpOrder(obj.cp_order_id);	
+			/*if(obj.pay_type.equals("mmpay"))
+			{
+			
+			}
+			else
+			{
+			    pay = dao.getPayRecordByCpOrder(obj.cp_order_id);	
+			}*/
+			if(pay != null)
+			{
+				
+				if(isContain(obj.pay_type))
+				{
+					pay.thir_pay_id = obj.thir_pay_id;
+					//pay.amount = obj.amount;
+					obj.state = 0;
+				}
+				if(pay.state != 1)
+				pay.state = obj.state;
+				pay.is_pay_finish = 1;
+				dao.edit(pay);		
+				
+				if(!pay.pay_type.equals("mmpay"))
+				{
+					if(ConstValue.bNew == 1)
+					{
+						FeeDataDao feeDataDao = new FeeDataDao();
+						feeDataDao.pay(pay,true);	
+					}
+				    dao.payNotisfy(pay);
+				}
+				
+			}
+			
+		}
+		
+		
+	    return ret;
+	}
+	
+	public static boolean isContain(String type)
+	{
+		boolean ret = false;
+	if(type.equals(Pay.MmPayType) || type.equals(Pay.WoPayType) || type.equals(Pay.OpenPayType) || type.equals(Pay.JDPayType)||type.equals(Pay.FanHeType)){
+		return true; 
+	}
+		
+		return ret;
+	}
+	public void HandleReq(String reqStr, HttpServletResponse response)
+	{
+		PrintWriter out = null;
+		int ret = ConstValue.Fail;
+		
+		response.setContentType("text/html;charset=utf8");
+		
+		try {
+			 out = response.getWriter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		model.Pay obj = null;
+		
+		
+		if(reqStr != null)
+		{
+			DebuUtil.log("请求数据"+reqStr);
+			JSONObject json = JSONObject.fromObject(reqStr);
+			obj = new model.Pay(json);
+			if(obj.ver.compareTo("1.03.2") > 0)
+			{
+				 ret = HandleReq(obj);
+			}
+			else
+			{
+			   ret = HandleReq_O(obj);
+			}
+		
+		if(ret == ConstValue.OK)
+		{
+			 /*if(obj.state == 1)
+			 {
+				if(ConstValue.OPTIMIZE == 1)
+		        {
+		            //PayDao paydao = new PayDao();
+		            dao.payNotisfy(obj);
+		        }
+				else
+				{
+				    int result = obj.rsqCallbackUrl(0);
+				    DebuUtil.log("通知结果,result="+result);
+				    if( result== 1)
+		    	    {
+				    	DebuUtil.log("保存通知结果,pay.id="+obj.id);
+				    	dao.update(obj);
+		    	    }
+				}
+			 }*/
+	    	    
+			JSONObject rsqjson = new JSONObject();  
+			
+			rsqjson.put("ret", 1);
+			rsqjson.put("order_no", obj.pay_no);
+			out.print(rsqjson.toString());
+		}
+		else
+		{
+			JSONObject rsqjson = new JSONObject();          
+			rsqjson.put("ret", -1);
+			rsqjson.put("order_no", "");
+			out.print(rsqjson.toString());
+		}
+	 }
+		
+		out.close();
+		
+	}
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		DebuUtil.log("sapayOrder doGet");
+		HandleReq(request.getQueryString(),response);
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		DebuUtil.log("sapayOrder doPost");
+		InputStream   in=request.getInputStream();
+		byte[] buf=FileUtil.getByteArrayFromInputstream(in,-1);
+		String str = new String(buf,"UTF-8");
+		
+		if(ConstValue.RDR == 1)
+		{
+		    //str = URLDecoder.decode(str,"UTF-8");	
+		}
+		
+		HandleReq(str,response);
+		
+	}
+}

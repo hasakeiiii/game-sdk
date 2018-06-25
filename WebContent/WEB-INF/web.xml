@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<filter>
+		<filter-name>FilterPagePrint</filter-name>
+		<filter-class>common.FilterPageName</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FilterPagePrint</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>FilterEncoding</filter-name>
+		<filter-class>common.FilterEncoding</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>FilterEncoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>CacheSystem</servlet-name>
+		<servlet-class>azul.CacheSystem</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>Activate</servlet-name>
+		<servlet-class>sdkReq.Activate</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Activate</servlet-name>
+		<url-pattern>/activate</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TenpayOrder</servlet-name>
+		<servlet-class>sdkReq.TenpayOrder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TenpayOrder</servlet-name>
+		<url-pattern>/tenpay_sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TCpayOrder</servlet-name>
+		<servlet-class>sdkReq.TCpayOrder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TCpayOrder</servlet-name>
+		<url-pattern>/tcpay_sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>TCPayNotisfy</servlet-name>
+		<servlet-class>sdkReq.TCPayNotisfy</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TCPayNotisfy</servlet-name>
+		<url-pattern>/notity_ct</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>TCPayNotisfy</servlet-name>
+		<url-pattern>/notity_ctmsm</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UnionpayOrder</servlet-name>
+		<servlet-class>sdkReq.UnionpayOrder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UnionpayOrder</servlet-name>
+		<url-pattern>/unionpay_sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Login</servlet-name>
+		<servlet-class>sdkReq.Login</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Login</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Register</servlet-name>
+		<servlet-class>sdkReq.Register</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Register</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>AlipayOrderFO</servlet-name>
+		<servlet-class>sdkReq.AlipayOrderFO</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AlipayOrderFO</servlet-name>
+		<url-pattern>/alipay_sign_fo</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Init</servlet-name>
+		<servlet-class>sdkReq.Init</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Init</servlet-name>
+		<url-pattern>/init</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>AlipayOrder</servlet-name>
+		<servlet-class>sdkReq.AlipayOrder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AlipayOrder</servlet-name>
+		<url-pattern>/alipay_sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>mmpayOrder</servlet-name>
+		<servlet-class>sdkReq.mmpayOrder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mmpayOrder</servlet-name>
+		<url-pattern>/mmpay_sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>MmpayRsq</servlet-name>
+		<servlet-class>sdkReq.MmpayRsq</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MmpayRsq</servlet-name>
+		<url-pattern>/MmpayRsq</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>YeepayOrder</servlet-name>
+		<servlet-class>sdkReq.YeepayOrder</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>YeepayOrder</servlet-name>
+		<url-pattern>/yeepay_sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>YeepayRsq</servlet-name>
+		<servlet-class>sdkReq.YeepayRsq</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>YeepayRsq</servlet-name>
+		<url-pattern>/yeepayrsq_sign</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>changePassword</servlet-name>
+		<servlet-class>sdkReq.changePassword</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>changePassword</servlet-name>
+		<url-pattern>/changePassword</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>download</servlet-name>
+		<servlet-class>sdkReq.download</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>download</servlet-name>
+		<url-pattern>/download</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>gameExit</servlet-name>
+		<servlet-class>sdkReq.gameExit</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>gameExit</servlet-name>
+		<url-pattern>/afdf</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>LoginRsq</servlet-name>
+		<servlet-class>sdkReq.LoginRsq</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginRsq</servlet-name>
+		<url-pattern>/LoginRsq</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>IdentifyServlet</servlet-name>
+		<servlet-class>sdkReq.IdentifyServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>IdentifyServlet2</servlet-name>
+		<servlet-class>sdkReq.IdentifyServlet2</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>FindPswServlet</servlet-name>
+		<servlet-class>sdkReq.FindPswServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>IdentifyServlet</servlet-name>
+		<url-pattern>/IdentifyServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>IdentifyServlet2</servlet-name>
+		<url-pattern>/IdentifyServlet2</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>FindPswServlet</servlet-name>
+		<url-pattern>/FindPsw</url-pattern>
+	</servlet-mapping>
+
+<<<<<<< .mine
+    <servlet-mapping>
+    <servlet-name>ThreeProvinceMonthAction</servlet-name>
+    <url-pattern>/servlet/ThreeProvinceMonthAction</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CheckPsdServlet</servlet-name>
+    <url-pattern>/checkpsd</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>RepackageServlet</servlet-name>
+    <url-pattern>/RepackageServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PreRepackServlet</servlet-name>
+    <url-pattern>/PreRepackServlet</url-pattern>
+  </servlet-mapping>
+  
+      <servlet>
+    <servlet-name>DataQueryAction</servlet-name>
+    <servlet-class>servlet.DataQueryAction</servlet-class>
+  </servlet>
+    <servlet-mapping>
+    <servlet-name>DataQueryAction</servlet-name>
+    <url-pattern>/servlet/DataQueryAction</url-pattern>
+  </servlet-mapping>
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>/WEB-INF/applicationContext.xml</param-value>
+  </context-param>
+  
+  
+=======
+
+
+
+
+	<servlet>
+		<servlet-name>ProvinceDataAction</servlet-name>
+		<servlet-class>servlet.ProvinceDataAction</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>PayInfoAction</servlet-name>
+		<servlet-class>servlet.PayInfoAction</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>CommonOperationAction</servlet-name>
+		<servlet-class>servlet.CommonOperationAction</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>FeeDataAction</servlet-name>
+		<servlet-class>servlet.FeeDataAction</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>CooperationRemindAction</servlet-name>
+		<servlet-class>servlet.CooperationRemindAction</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>MzBalance</servlet-name>
+		<servlet-class>sdkReq.MzBalance</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>MzChargeOrder</servlet-name>
+		<servlet-class>sdkReq.MzChargeOrder</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>MzPayServlet</servlet-name>
+		<servlet-class>sdkReq.MzPayServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MzBalance</servlet-name>
+		<url-pattern>/mzbalance</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>MzChargeOrder</servlet-name>
+		<url-pattern>/mzorder</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>MzPayServlet</servlet-name>
+		<url-pattern>/mzpay</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>OnlyPayServlet</servlet-name>
+		<servlet-class>sdkReq.OnlyPayServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>OnlyPayServlet</servlet-name>
+		<url-pattern>/onlypay</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ProvinceDataAction</servlet-name>
+		<url-pattern>/servlet/provinceDataAction</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PayInfoAction</servlet-name>
+		<url-pattern>/servlet/PayInfoAction</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CommonOperationAction</servlet-name>
+		<url-pattern>/servlet/CommonOperationAction</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FeeDataAction</servlet-name>
+		<url-pattern>/servlet/FeeDataAction</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CooperationRemindAction</servlet-name>
+		<url-pattern>/servlet/CooperationRemindAction</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>RegisterOnTimeAction</servlet-name>
+		<servlet-class>servlet.RegisterOnTimeAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RegisterOnTimeAction</servlet-name>
+		<url-pattern>/servlet/RegisterOnTimeAction</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserLevelAction</servlet-name>
+		<servlet-class>servlet.UserLevelAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserLevelAction</servlet-name>
+		<url-pattern>/servlet/UserLevelAction</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>GameTimeAction</servlet-name>
+		<servlet-class>servlet.GameTimeAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GameTimeAction</servlet-name>
+		<url-pattern>/servlet/GameTimeAction</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>LtvAction</servlet-name>
+		<servlet-class>servlet.LtvAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LtvAction</servlet-name>
+		<url-pattern>/servlet/LtvAction</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ThreeProvinceAction</servlet-name>
+		<servlet-class>servlet.ThreeProvinceAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ThreeProvinceAction</servlet-name>
+		<url-pattern>/servlet/ThreeProvinceAction</url-pattern>
+
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CooperationMmAction</servlet-name>
+		<servlet-class>servlet.CooperationMmAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CooperationMmAction</servlet-name>
+		<url-pattern>/servlet/CooperationMmAction</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CooperationUnAction</servlet-name>
+		<servlet-class>servlet.CooperationUnAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CooperationUnAction</servlet-name>
+		<url-pattern>/servlet/CooperationUnAction</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>Upload</servlet-name>
+		<servlet-class>servlet.Upload</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Upload</servlet-name>
+		<url-pattern>/servlet/Upload</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>CooperationTelAction</servlet-name>
+		<servlet-class>servlet.CooperationTelAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CooperationTelAction</servlet-name>
+		<url-pattern>/servlet/CooperationTelAction</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ThreeProvinceMonthAction</servlet-name>
+		<servlet-class>servlet.ThreeProvinceMonthAction</servlet-class>
+	</servlet>
+	<servlet>
+		<description>This is the description of my J2EE component</description>
+		<display-name>This is the display name of my J2EE component</display-name>
+		<servlet-name>CheckPsdServlet</servlet-name>
+		<servlet-class>sdkReq.CheckPsdServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>This is the description of my J2EE component</description>
+		<display-name>This is the display name of my J2EE component</display-name>
+		<servlet-name>RepackageServlet</servlet-name>
+		<servlet-class>sdkReq.RepackageServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>This is the description of my J2EE component</description>
+		<display-name>This is the display name of my J2EE component</display-name>
+		<servlet-name>PreRepackServlet</servlet-name>
+		<servlet-class>sdkReq.PreRepackServlet</servlet-class>
+	</servlet>
+
+
+
+	<servlet-mapping>
+		<servlet-name>ThreeProvinceMonthAction</servlet-name>
+		<url-pattern>/servlet/ThreeProvinceMonthAction</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CheckPsdServlet</servlet-name>
+		<url-pattern>/checkpsd</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RepackageServlet</servlet-name>
+		<url-pattern>/RepackageServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PreRepackServlet</servlet-name>
+		<url-pattern>/PreRepackServlet</url-pattern>
+	</servlet-mapping>
+
+
+
+	<!-- 支付Servlet开始 -->
+	<servlet>
+		<servlet-name>mchNotifyServlet</servlet-name>
+		<servlet-class>com.ipaynow.MchBackNotifyServlet</servlet-class>
+		<load-on-startup>3</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>mchNotifyServlet</servlet-name>
+		<url-pattern>/nowpay/notify</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>frontnotify</servlet-name>
+		<servlet-class>com.ipaynow.MchFrontNotifyServlet</servlet-class>
+		<load-on-startup>4</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>frontnotify</servlet-name>
+		<url-pattern>/nowpay/frontnotify</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>MzChargePCOrder</servlet-name>
+		<servlet-class>sdkReq.MzChargePCOrder</servlet-class>
+	</servlet>
+
+
+	<servlet-mapping>
+		<servlet-name>MzChargePCOrder</servlet-name>
+		<url-pattern>/mzpcorder</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>WxMobilePayOder</servlet-name>
+		<servlet-class>sdkReq.WxMobilePayOrder</servlet-class>
+	</servlet>
+
+
+	<servlet-mapping>
+		<servlet-name>WxMobilePayOder</servlet-name>
+		<url-pattern>/wxpay_sign</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 支付Servlet结束 -->
+
+	<servlet>
+		<servlet-name>RechargeQuery</servlet-name>
+		<servlet-class>servlet.RechargeQuery</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>RechargeQuery</servlet-name>
+		<url-pattern>/servlet/queryBalance</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>DataQueryExcelAction</servlet-name>
+		<servlet-class>servlet.DataQueryExcelAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DataQueryExcelAction</servlet-name>
+		<url-pattern>/servlet/DataQueryExcelAction</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ChannelQueryAction</servlet-name>
+		<servlet-class>servlet.ChannelQueryAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ChannelQueryAction</servlet-name>
+		<url-pattern>/servlet/ChannelQueryAction</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DataQueryAction</servlet-name>
+		<servlet-class>servlet.DataQueryAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DataQueryAction</servlet-name>
+		<url-pattern>/servlet/DataQueryAction</url-pattern>
+	</servlet-mapping>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+
+
+
+
+>>>>>>> .r833
+</web-app>

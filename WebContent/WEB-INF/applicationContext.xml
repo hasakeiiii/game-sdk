@@ -1,0 +1,147 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<!-- 将任务对象配置成ioc容器中的bean -->
+	<bean id = "myTask" class="util.MyTask"></bean>
+
+	<!-- 实现任务调度
+		指向当前需要执行的任务是由哪个bean提供的;该bean提供的哪个方法
+		job - bean   backup()
+		setTargetObject(Object obj)
+			设置当前执行的任务由哪个bean提供
+		setTargetMethod(String method)
+			设置当前执行的任务由该bean中的哪个方法提供
+	-->
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="myTask"></property>
+		<property name="targetMethod" value="sendMail"></property>
+	</bean>
+	
+	<!-- 设置任务调度执行的周期
+			设置什么时候,每隔多长时间执行一次任务 
+		CronTiggerFactoryBean	
+		setJobDetail(JobDetail jd)
+			设置启动哪个任务调度
+		setCronExpression(String ex)
+			通过设置一个表达式,描述该任务执行的时间
+		表达式由其部分组成 : 0 * * * * ?
+			秒 分 时 周日期 月 月日期 年(省略)
+	-->
+	<bean id="tigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 8 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 10 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 12 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 14 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger5" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 19 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger6" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 17 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger7" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 18 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger8" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 20 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger9" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 21 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger10" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 0 22 * * ?"></property>
+	</bean>
+	
+	<bean id="tigger11" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail"></property>
+		<property name="cronExpression"
+			value="0 59 23 * * ?"></property>
+	</bean>
+	
+	<!-- 通过计时器启动任务调度 
+		ScheduleFactoryBean
+			setTriggers(Trigger[] ts)
+	-->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="tigger1"/>
+				<ref bean="tigger2"/>
+				<ref bean="tigger3"/>
+				<ref bean="tigger4"/>
+				<ref bean="tigger5"/>
+				<ref bean="tigger6"/>
+				<ref bean="tigger7"/>
+				<ref bean="tigger8"/>
+				<ref bean="tigger9"/>
+				<ref bean="tigger10"/>
+				<ref bean="tigger11"/>
+			</list>
+		</property>
+	</bean>
+	 
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+

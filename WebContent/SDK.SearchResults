@@ -1,0 +1,16 @@
+---- getpayNum Matches (15 in 3 files) ----
+Gamedata.java (src\model):				aliPay+=payDao.getpayNum(game_id,packet_id,date,"alipay",channelType,dispaytype);
+Gamedata.java (src\model):				yeePay+=payDao.getpayNum(game_id,packet_id,date,"yeepay",channelType,dispaytype);
+Gamedata.java (src\model):				mmPay+=payDao.getpayNum(game_id,packet_id,date,"mmpay",channelType,dispaytype);
+Gamedata.java (src\model):				tenPay+=payDao.getpayNum(game_id,packet_id,date,"tenpay",channelType,dispaytype);
+GamePayDataGen.java (src\model):						channelData.settle_aliPay = payDao.getpayNum(game_id,packet_id,date,"alipay",channelType,dispaytype);
+GamePayDataGen.java (src\model):						channelData.settle_yeePay = payDao.getpayNum(game_id,packet_id,date,"yeepay",channelType,dispaytype);
+GamePayDataGen.java (src\model):						channelData.settle_mmPay = payDao.getpayNum(game_id,packet_id,date,"mmpay",channelType,dispaytype);
+GamePayDataGen.java (src\model):						channelData.settle_tcPay = payDao.getpayNum(game_id,packet_id,date,"tcpay",channelType,dispaytype);
+GamePayDataGen.java (src\model):						channelData.settle_uniPay = payDao.getpayNum(game_id,packet_id,date,"unipay",channelType,dispaytype);
+GamePayDataGen.java (src\model):						channelData.settle_tenPay = payDao.getpayNum(game_id,packet_id,date,"tenpay",channelType,dispaytype);
+GamePayDataGen.java (src\model):						channelData.settle_unionPay = payDao.getpayNum(game_id,packet_id,date,"unionpay",channelType,dispaytype);
+PayDao.java (src\dao):	public int getpayNum(String game_id,String packet_id,String date,String payType,String channelType,String type)
+PayDao.java (src\dao):		return getpayNum2(game_id,packet_id,date,payType,channelType,type,ratio);
+PayDao.java (src\dao):	public int getpayNum2(String game_id,String packet_id,String date,String payType,String channelType,String type,int ratio)
+PayDao.java (src\dao):			ret = dao.GetCount2(sql,"getpayNum",date,packet_id);

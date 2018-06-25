@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<TITLE> New Document </TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link rel="stylesheet" href="../_css/back.css" type="text/css"/>
+</HEAD>
+<BODY id="aa">
+1
+<script type="text/javascript">
+function aa(id,index){
+    var text=document.getElementById("aa").innerHTML;
+    alert(text);
+    var cc=Check.trimJs(text);
+    //var cc=Check.trimHtml(text);
+    alert(cc);
+}
+</script>
+<input type="text" name="textfield">
+<input type="button" name="Submit" value="提交" onClick="aa()">
+</BODY>
+</HTML>
+<script language="JavaScript">
+//javascript null =undefined
+//check Text length
+var Check = new Object();
+Check.trimJs = function(str){
+	return str.replace(/<(script|BODY|%)[\s\S]*?\/\1>/ig,"");
+}
+
+Check.trimHtml = function(str){
+	return str.replace(/<[^>]*>/g,"")
+}
+// 替换全部
+Check.replaceAll = function(str,key,value){   
+	return str.replace(new RegExp(key,"g"),value);    
+}
+</script>

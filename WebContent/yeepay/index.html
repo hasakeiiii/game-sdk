@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>非银行卡支付专业版
+		</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+		<link href="css/yeepaytest.css" type="text/css" rel="stylesheet" />
+	</head>
+	<body>
+		<div id="title" class="title">非银行卡支付专业版</div>
+		<hr />
+		<div id="first" class="first">
+			<div id="firstTitle">支付演示</div>
+			<div id="firstInput">
+				<form method="get" action="req.jsp" target="_blank">
+					<table>
+						<tr><td>商户订单号:</td><td><input type="text" name="p2_Order" id="p2_Order" /></td></tr>
+						<tr><td>订单金额:</td><td><input type="text" name="p3_Amt" id="p3_Amt" value="" /></td></tr>
+						<tr><td>是否较验订单金额:</td><td><input type="text" name="p4_verifyAmt" id="p4_verifyAmt" value="" /></td></tr>
+						<tr><td>产品名称:</td><td><input type="text" name="p5_Pid" id="p5_Pid" value="" /></td></tr>
+						<tr><td>产品类型:</td><td><input type="text" name="p6_Pcat" id="p6_Pcat" value="" /></td></tr>
+						<tr><td>产品描述:</td><td><input type="text" name="p7_Pdesc" id="p7_Pdesc" value="" /></td></tr>
+						<tr><td>通知地址:</td><td><input type="text" name="p8_Url" id="p8_Url" value="http://119.147.23.178:8080/sdk/yeepay/callback.jsp" /></td></tr>
+						<tr><td>扩展信息:</td><td><input type="text" name="pa_MP" id="pa_MP" value="" /></td></tr>
+						<tr><td>卡面额组:以半角逗号分隔</td><td><input type="text" name="pa7_cardAmt" id="pa7_cardAmt" value="" onblur="javascript:this.value=this.value.replace(/\uff0c/gm,',')"/></td></tr>
+						<tr><td>卡号组:以半角逗号分隔</td><td><input type="text" name="pa8_cardNo" id="pa8_cardNo" value="" onblur="javascript:this.value=this.value.replace(/\uff0c/gm,',')"/></td></tr>
+						<tr><td>卡密组:以半角逗号分隔</td><td><input type="text" name="pa9_cardPwd" id="pa9_cardPwd" value="" onblur="javascript:this.value=this.value.replace(/\uff0c/gm,',')"/></td></tr>
+						<tr><td>支付通道编码:</td><td><input type="text" name="pd_FrpId" id="pd_FrpId" value="" /></td></tr>
+						<tr><td>用户唯一标识:</td><td><input type="text" name="pz_userId" id="pz_userId" value="100001" /></td></tr>
+						<tr><td>用户的注册时间:</td><td><input type="text" name="pz1_userRegTime" id="pz1_userRegTime" value="2009-01-01 00:00:00" /></td></tr>
+						<tr><td></td><td><input type="submit" value="支付" onclick="javascript: if(confirm('如果您同时使用的是真实的卡密和易宝支付提供的测试商户ID进行测试，您的支付金额将被存入易宝的测试账户，请谨慎操作！')){}else{return false;}" /></td></tr>
+						<tr><td colspan="2"><font color=red>此操作可能造成交易风险：<br/>
+如果您同时使用的是真实的卡密和易宝支付提供的测试商户ID进行测试，<br/>
+您的支付金额将被存入易宝的测试账户，请谨慎操作！</font></td><td></td></tr>
+
+						
+					</table>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

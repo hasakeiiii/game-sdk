@@ -1,0 +1,857 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>无标题文档</title>
+</head>
+
+<script>
+//javascript null =undefined
+//check Text length
+var Check = new Object();
+Check.checkTextLength = function(textId,maxLength,alertStr){
+    var checkText=document.getElementById(textId);
+	var str=checkText.value;
+	if(str!=undefined) {
+		var trueLength=0;
+		for(i=0;i<str.length;i++) {
+			if( str.charCodeAt(i)>0 && str.charCodeAt(i)<255 ){
+				trueLength++;
+			}else{
+				// if char have chinese then length+2
+				trueLength+=2;
+			}
+		}
+		if(trueLength > maxLength) {
+			window.alert(alertStr);
+			checkText.focus();
+			return false;
+		}
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+//get str length,chinese word count 2
+Check.getTextLength = function(str){	
+	if(str!=undefined) {
+		var trueLength=0;
+		for(i=0;i<str.length;i++) {
+			if( str.charCodeAt(i)>0 && str.charCodeAt(i)<255 ){
+				trueLength++;
+			}else{2
+				trueLength+=2;
+			}
+		}
+		return trueLength;
+	}
+	else {
+		return 0;
+	}
+}
+//验证时间的正确性，可以输入空值,根据返回值可以判断输入时间的大小，参数blanked是否可以为空,false表示不能为空，equalsed时间是否可以相等
+//返回true表示开始时间小于结束时间（正常）,false表示开始时间大于结束时间
+Check.checkDate = function(begEme,endEme,blanked,equalsed){
+	//首先检验输入控件是否存在
+    var beg;
+    var end;
+	var elemBeg=document.getElementById(begEme);
+    var begDate="";
+	if(elemBeg!=null){
+	 
+        begDate=Check.trim(elemBeg.value);
+	}
+	else{
+        alert("起始时间控件不存在");
+		return false;
+	}
+	var elemEnd=document.getElementById(endEme);
+    var endDate="";
+	if(elemEnd!=null){
+        endDate=Check.trim(elemEnd.value);
+	}
+	else{
+        alert("结束时间控件不存在");
+		return false;
+	}
+    //检查输入为空条件是否成立
+	if(!blanked){
+         if(begDate==""){
+		    alert("起始时间不能为空");
+		    elemBeg.focus();
+		    return false;
+         }
+         if(endDate==""){
+			alert("结束时间不能为空");
+			elemEnd.focus();
+			return false;
+         }
+	}
+    //检测输入的时间是否属于合法格式
+    if(begDate!=""){
+		if(!Check.isIllDate(begDate)){
+			alert("起始时间格式错误");
+			elemBeg.focus();
+			return false;
+		}
+		//将输入时间格式化成统一的格式
+		beg=Check.formatDate(begDate);
+		//将转换后的格式替代原来的值
+		elemBeg.value=beg;
+		beg=beg.replace(new RegExp("-", 'g'), "");
+		beg=beg.replace(new RegExp(" ", 'g'), "");
+		beg=beg.replace(new RegExp(":", 'g'), "");
+    }
+    if(endDate!=""){
+		if(!Check.isIllDate(endDate)){
+			alert("结束时间格式错误");
+			elemEnd.focus();
+			return false;
+		}
+		end=Check.formatDate(endDate);
+		elemEnd.value=end;
+		end=end.replace(new RegExp("-", 'g'), "");
+		end=end.replace(new RegExp(" ", 'g'), "");
+		end=end.replace(new RegExp(":", 'g'), "");	
+    }
+    if(begDate=="" || endDate==""){
+        return true;
+    }
+    //此时的数据全部不为空了
+    //两个值是否可以相等
+    if(!equalsed){
+		if(beg==end){
+		   alert("起始时间不能等于结束时间");
+		   elemBeg.focus();
+		   return false;
+		}
+    }
+	if(beg>end){
+		   alert("起始时间不能大于结束时间");
+		   elemBeg.focus();
+		   return false;
+	}
+    return true;
+}
+
+//将时间格式化成统一的形式2007-1-8,2007-1-8 12:23:45格式都可以格式
+Check.formatDate = function(str){
+    //如果长度符合规定长度就不做检测直接返回
+    if(str.length==10 || str.length==14){
+        return str;
+    }
+    var year=str.substring(0,str.indexOf("-"));
+    var beg=str.indexOf("-");
+    var end=str.lastIndexOf("-");
+    var month=str.substring(beg+1,end);
+	if(month.length<2){
+		month="0"+month;
+	}
+    if(str.length<10){
+        var day=str.substring(end+1,str.length);
+		if(day.length<2){
+			day="0"+day;
+		}
+        return year+"-"+month+"-"+day;
+    }
+    else{
+        var day=str.substring(end+1,str.indexOf(" "));
+		if(day.length<2){
+			day="0"+day;
+		}
+        var time=str.substring(str.indexOf(" "));
+        return year+"-"+month+"-"+day+time;
+    } 
+}
+
+//自定义trim函数,去除字符串前面和后面的空字符，字符串中间的空字符不会被替换
+Check.trim = function(str){
+    return str.replace(/(^[\s]*)|([\s]*$)/g, "");
+}
+
+//自定义trim函数,去除字符串所有的空字符
+Check.trimAll = function(str){
+	return str.replace(/\s/g,"");
+}
+Check.trimAllGbk = function(str){
+    var temp=str.split("　");
+    var resultStr="";
+    for(i = 0; i < temp.length; i++){
+        resultStr+=temp[i];
+    }
+    return resultStr;
+}
+Check.trimHtml = function(str){
+	return str.replace(/<[^>]*>/g,"")
+}
+// 替换全部
+Check.replaceAll = function(str,key,value){   
+	return str.replace(new RegExp(key,"g"),value);    
+}
+//判断输入框，文本框是否为空
+Check.isBlank = function(inputId,altStr){
+	var myInput=document.getElementById(inputId);
+	if(myInput.value==""){
+		alert(altStr);
+		myInput.focus();
+		return false;
+	}
+	return true;
+}
+Check.isEquals = function(inputId1,inputId2,altStr){
+    var myInput1=document.getElementById(inputId1).text;
+	var myInput2=document.getElementById(inputId2).text;
+	if(myInput1!=myInput2){
+        alert(altStr);
+		return false;
+	}
+	return true;
+}
+Check.isNormal = function(str){
+     var exp = /^\w+$/;
+     var p = new RegExp(exp);
+     if (p.test(str))return true;
+     return false; 
+}
+
+//验证是正数数字类型
+Check.isPosNumber = function(str){
+	var patrn=/^[0-9]\d*$/ ;
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//验证是否是年龄型，不可以是负数，不能以0开头
+Check.isAge = function(str){
+	var patrn=/^[1-9][0-9]{0,1}$/ ;
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//验证是否是数字型，以0开头只能有一个0，可以是负数
+Check.isNumber = function(str){
+	var patrn=/^(\+|-)?(0|[1-9]\d*)(\.\d*[1-9])?$/ ;
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//判断是否属于金额类型，同时小数点后只能有两位，可以是负数
+Check.isMoneyAll = function(str){
+	var patrn=/^(-)?(0|[1-9]\d*)(\.\d{1,2})?$/;
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//判断是否属于金额类型，同时小数点后只能有两位，不可以是负数
+Check.isMoney = function(str){
+	var patrn=/^(0|[1-9]\d*)(\.\d{1,2})?$/;
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//判断email地址是否正确
+Check.isEmail = function(str){ 
+	var patrn=/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//判断时间格式是否正确
+Check.isDate = function(str){
+	//如果时间是长格式的
+	if(str.length>10){
+		var patrn=/^(\d{4})\-(\d{2})\-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/; 
+	}
+	else{
+		var patrn=/^(\d{4})\-(\d{2})\-(\d{2})$/;
+	}
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//判断时间格式是否含有不正常的正确时间，例如2007-1-4 12:23:34
+Check.isIllDate = function(str){
+    var patrn1;
+    var patrn2;
+    var patrn3;
+    var result=false;
+	//如果时间是长格式的
+	if(str.length==19){
+		patrn1=/^(\d{4})\-(\d{2})\-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/; 
+	}
+	else if(str.length>10){
+		patrn1=/^(\d{4})\-(\d{1})\-(\d{1}) (\d{2}):(\d{2}):(\d{2})$/; 
+        patrn2=/^(\d{4})\-(\d{1})\-(\d{2}) (\d{2}):(\d{2}):(\d{2})$/; 
+        patrn3=/^(\d{4})\-(\d{2})\-(\d{1}) (\d{2}):(\d{2}):(\d{2})$/; 
+	}
+	else if(str.length==10){
+		patrn1=/^(\d{4})\-(\d{2})\-(\d{2})$/;
+	}
+	else if(str.length<10){
+		patrn1=/^(\d{4})\-(\d{1})\-(\d{2})$/;
+        patrn2=/^(\d{4})\-(\d{2})\-(\d{1})$/;
+        patrn3=/^(\d{4})\-(\d{1})\-(\d{1})$/;
+	}
+    if(patrn1!=undefined){
+        if(patrn1.exec(str)){
+            result=true;
+        }
+    }
+    if(patrn2!=undefined){
+        if(patrn2.exec(str)){
+            result=true;
+        }
+    }
+    if(patrn3!=undefined){
+        if(patrn3.exec(str)){
+            result=true;
+        }
+    }	
+	return result;
+}
+
+//判断手机格式是否正确
+Check.isMobile = function(str){
+	//不是完整的11位手机号或者正确的手机号前七位
+	var patrn = /^1[3|5][0-9]\d{4,8}$/; 
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//判断颜色格式是否正确
+Check.isColor = function(str){
+	var patrn = /^#[0-9a-fA-F]{6}$/; 
+	if(!patrn.exec(str)) return false;
+	return true;
+}
+
+//判断字符穿是否是以关键字结尾的
+Check.endWith = function(str,key){
+	if(str.lastIndexOf(key)==-1){
+        return false;
+	}
+    var index=str.lastIndexOf(key);
+	if(str.length==index+key.length){
+        return true;
+	}
+	return true;
+}
+//判断字符穿是否是以关键字开头的
+Check.begWith = function(str,key){
+	if(str.indexOf(key)==0){
+		if(str.length==str.indexOf(key)+key.length){
+			return true;
+		}
+	}
+	return false;
+}
+
+//判断文件格式,验证格式"gif,jpg,bmp"
+Check.isFile = function(str,key){
+	var type=str.toLowerCase();
+	var arr=key.split(",");
+	var right=false;
+	for(var i=0;i<arr.length;i++){
+		if(Check.endWith(type,arr[i])){
+	        right=true;
+			break;
+		}
+	}
+	if(!right){
+	     alert("请选择"+key+"格式文件");
+		 return false;
+	}
+	return true;
+}
+
+function enterAsTab() {
+	if (event.keyCode!=13) return true;
+	var formElements=new Array();
+	for(i=0;i<document.forms.length;i++){
+		for(j=0;j<document.forms[i].elements.length;j++){
+		    formElements[formElements.length]=document.forms[i].elements[j];
+		}
+	}
+	for (i=0;i <= document.all.length - 1; i++){
+        if (event.srcElement != formElements[i]) continue;
+        if ((formElements[i].type=="button")||(formElements[i].type=="reset")||(formElements[i].type=="submit")){
+        formElements[i].click();
+            break;
+        }
+	
+        if (formElements[i+1] == null || formElements.length<=(i+1)){break;}
+        for(j = i+1; j < formElements.length; j++){
+            if ((formElements[j].disabled == false) && (formElements[j].type != "hidden")){
+                try{
+                    formElements[j].focus();
+                    if (formElements[j].type=="text" || formElements[j].type=="password"){
+                        formElements[j].click();
+                        formElements[j].select();
+                    }
+                    break;
+                }catch(e){};
+            }
+        }
+        break;
+	}
+	event.returnValue = false;
+}
+//------------------------------------------------回车键自动提交
+/*
+var elem=document.getElementById("m_userpwd");
+if(elem.addEventListener){
+	elem.addEventListener("keypress",mykeypdown,false);
+}else{
+	elem.attachEvent("onkeypress",mykeypdown);
+}
+function mykeypdown(evt){
+	if(evt.keyCode==13){
+	  
+	}
+}
+*/
+//================================================================================
+//form表单的验证。如果控件有alt属性则被检查。找到相同"title_"加name控件的innerHTML然后提示
+//离开控件立刻检测  onblur="CheckForm.js_checkElem(this)",新版本采用表单自动绑定验证时间,如果需要使用则调用CheckForm.formBind("formId");
+/*
+window.onload = function() {
+	CheckForm.formBind("mainForm");
+	CheckForm.alertType="";//表示页面使用页面不使用弹出框提示,默认使用弹出框提示
+}
+*/
+//使用提交按钮时检测 if(!CheckForm.checkForm("mainForm"))return;
+//验证规则绑定在alt属性上，不同规则使用"_"分隔
+//radio和checkbox如果一组有多个元素，任意一个加alt都会对全组检查
+//_key 不允许特殊字符，_6-16长度检查，_email 邮箱地址检查，
+//_>
+// _int 整型检查，_double double型检查，_(1-30)数字在1-30之间不包括1和30，_[1-30]数字在1-30之间包括1和30,暂时不支持无上限或无下限的数字
+// 是否是金额数字_money 小数点后只能有两位
+//_null可以为空有输入就检查，_method:xxx() 验证后回调方法， _span:不使用默认的提示span 使用公用的span进行提示，冒号后跟span的id，
+//method中调用的方法必须要有返回true,false
+//可以针对任意元素里面的元素进行验证,如table,div 必须使用它们的id属性
+//javascript验证是使用alert形式还是innerHTML形式使用属性CheckForm.alertType控制
+//CheckForm.trace属性用于调试,查看在那个元素被中断
+//可以自己设置验证通过信息和提示图片
+//特殊的验证可以调用js_checkPass和js_checkUnPass方法
+//外部文件检查单个元素可以使用if(CheckForm.js_begCheck(elemInfoTitle,elemValue,alt,elem))return;方法
+if (typeof Check != 'object'){
+	alert('Check object doesn\'t exists.');
+}
+var CheckForm=new Object();
+CheckForm.alertType="alert";
+CheckForm.rigthIco="";
+CheckForm.errorIco="";
+CheckForm.trace=false;//是否弹出调试信息
+CheckForm.js_right_hint="<img src='../_js/ico/icon_right.gif' align='absmiddle'/><span style='color:#009900'> 已通过验证</span>";
+CheckForm.js_error_hint="<img src='../_js/ico/icon_error.gif' align='absmiddle'/>&nbsp;<span style='color:#FF0000'>";
+CheckForm.js_error_hint_end="</span>"
+CheckForm.js_tempPass;//验证两次密码是否相同使用的临时变量
+CheckForm.js_tempElem;
+CheckForm.js_tempAlert="";
+CheckForm.checkForm=function(formId){
+	var js_checkForm=document.getElementById(formId);
+	if(js_checkForm==null){
+		alert("there is no form id is:"+formId);
+	}
+	
+	for (var i=0; i<js_checkForm.elements.length; i++){
+		var elem=js_checkForm.elements[i];
+		var elemType=elem.type;
+		//alt不为空时才进行验证
+		var alt=elem.getAttribute("alt");
+		if(alt==null || alt==""){
+			continue;
+		}
+		if(this.trace){
+			alert("beg:"+elem.name+"   "+alt);
+		}
+		var elemTd=document.getElementById("title_"+elem.name);
+		if(elemTd==null){
+		   alert("no title element id is:"+"title_"+elem.name);
+		   return false;
+		}
+	   var elemInfoTitle=this.trimCode(elemTd.innerHTML);
+	   var elemValue=Check.trim(elem.value);
+	   if(!this.js_checkElem(elemInfoTitle,elemValue,alt,elem))return false;
+	   if(this.trace){
+			alert("end:"+elem.name+"   "+alt);
+		}
+	}//end for
+	return true;
+}
+//--------------------------------------------------------------------------------------------------------------------
+//检查单个元素是否符合标准,用于一离开控件就开始检查
+CheckForm.js_checkElemBlur=function(elem){
+    var elemInfoTitle="";
+    var elemTd=document.getElementById("title_"+elem.name);
+    if(elemTd!=null){
+    	elemInfoTitle=this.trimCode(elemTd.innerHTML);
+    }
+    var alt=elem.getAttribute("alt");
+    var elemValue=Check.trim(elem.value);
+    //alert(elemInfoTitle+"--"+elemValue+"--"+alt+"---"+elem.name);
+	CheckForm.js_checkElem(elemInfoTitle,elemValue,alt,elem);
+}
+CheckForm.js_checkElem=function(elemInfoTitle,elemValue,alt,elem){
+	//参数是4个就说明是某个控件引发的检查
+	if(arguments.length==4){
+		var elemType=elem.type;
+		if (elemType=="text" || elemType=="textarea" || elemType=="password"){
+		   this.js_tempElem=elem;
+	       if(!this.js_begCheck(elemInfoTitle,elemValue,alt,elem))return false;
+		   if(elemType=="password"){
+				if(this.js_tempPass==null){
+					this.js_tempPass=elem;
+				}
+				else{
+					if(this.js_tempPass.value!=elemValue){
+						this.js_alertType("两次密码不相同!",elem.name);
+						return false;
+					}
+				}
+		   }
+	    }
+		else if(elemType=="radio" || elemType=="checkbox"){
+			var hasSelect=false;
+			var elemBox=document.getElementsByName(elem.name);
+			for(var j=0;j<elemBox.length;j++){
+				if(elemBox[j].checked){
+					hasSelect=true;
+					break; 
+				}
+			}
+			if(!hasSelect){
+				this.js_alertType("请选择"+elemInfoTitle+"!",elem.name);
+				return false;
+			}
+	   }
+	   else if(elemType=="select-one"){
+		   if(elem.options[elem.options.selectedIndex].value=="-1" || elem.options[elem.options.selectedIndex].value==""){
+			   this.js_alertType("请选择"+elemInfoTitle+"!",elem.name);
+			   return false;
+		   }
+	   }
+	  //如果不是使用公用的提示span,否则使用单独的成功提示span
+   	  this.js_right_show(elem);
+	}
+	//不是控件引发的检查
+	else{
+		if(!this.js_begCheck(elemInfoTitle,elemValue,alt))return false;
+	}
+    /*
+	//如果有特殊的验证需求就调用页面的一个验证方法进行验证
+   if(elem.id.indexOf("_method:")>-1){
+	   var temp=this.js_getMethod(elem.id);
+	   var success=eval(temp);
+	   if(!success){
+		   return false;
+	   }
+   }
+   * */
+   return true;
+}
+//============================--------------------------------------
+CheckForm.js_begCheck=function(elemInfoTitle,elemValue,alt,elem){
+	var warnElem="";
+	if(arguments.length==4){
+		warnElem=elem.name;
+	}
+	//alt带有null就可以为空，否则必须有输入
+    if(alt.indexOf("_null")==-1 && elemValue==""){
+		this.js_alertType("请输入"+elemInfoTitle+"!",warnElem);
+	    return false;
+    }
+	//输入长度验证
+	if(alt.indexOf("-")>-1){
+	   var textLength=this.js_getLength(alt);
+	   //使用"-"split是因为在js_getLength函数中"-"已经被","替换
+	   var tempLength=textLength.split(",");
+	   var trueLength=Check.getTextLength(elemValue);
+	   if(tempLength[0]==tempLength[1]){
+	   	    if(trueLength!=tempLength[0]){
+	   	    	this.js_alertType(elemInfoTitle+"必须是"+tempLength[0]+"个字符",warnElem);
+	   	    	return false;
+	   	    }
+	   }
+	   else if(trueLength<tempLength[0] || trueLength>tempLength[1]){
+		   var text=elemInfoTitle+"长度必须为"+tempLength[0]+"-"+tempLength[1]+"个字符";
+		   if(alt.indexOf("key")==-1){
+			   text+="(汉字为两个)";
+		   }
+		   this.js_alertType(text,warnElem);
+		   return false;
+	   }
+	}
+	//不能包含特殊字符
+	if(alt.indexOf("_key")>-1){
+	   if(!Check.isNormal(elemValue)){
+		   this.js_alertType(elemInfoTitle+"必须是数字或英文",warnElem);
+		   return false;
+	   }
+	}
+	else if(alt.indexOf("_int")>-1){
+	   if(!Check.isPosNumber(elemValue)){
+		   this.js_alertType(elemInfoTitle+"必须为数字型",warnElem);
+		   return false;
+	   }
+	   //检查控件是否除了_int检查之外有别的约束条件
+	   if(!this.getAct(elemInfoTitle,elemValue,alt,warnElem))return false;
+	}
+	else if(alt.indexOf("_double")>-1){
+	   if(!Check.isMoney(elemValue)){
+		   this.js_alertType(elemInfoTitle+"必须为数字型",warnElem);
+		   return false;
+	   }
+	   //检查控件是否除了_double检查之外有别的约束条件
+	   if(!this.getAct(elemInfoTitle,elemValue,alt,warnElem))return false;
+	}
+	else if(alt.indexOf("email")>-1){
+	   if(!Check.isEmail(elemValue)){
+		   this.js_alertType(elemInfoTitle+"不符合xxx@163.com格式",warnElem);
+		   return false;
+	   }
+	}
+   return true;
+}
+//-------------------------------错误提示调用方法------------------------------------------------------------
+//如果只使用alert提示就输入需要提示的内容，使用控件提示就输入提示控件warn_的后缀
+CheckForm.js_alertType=function(str,warnElem){
+    //如果alert控件存在就使用alert控件，否则使用标准的alert
+    if(typeof(error) == 'undefined'){
+		alert(str);
+	}else{
+	    error(str);
+	}
+	if(warnElem!=""){
+		//先找具体的提示span
+		if(document.getElementById("warn_"+warnElem)!=null){
+			document.getElementById("warn_"+warnElem).innerHTML=this.js_error_hint+str+this.js_error_hint_end;
+		}
+		//找不到然后查看是否有公用的提示sapn
+		else if(document.getElementById("error_info")!=null){
+			document.getElementById("error_info").style.display="block";
+			document.getElementById("error_info").innerHTML=this.js_error_hint+str+this.js_error_hint_end;
+		}
+	}
+	/*
+	if(this.js_tempElem!=null){
+		this.js_tempElem.value="";
+		CheckForm.js_tempAlert=this.js_tempElem.name;
+		this.js_tempElem.focus();
+	}
+	*/
+}
+//-------------------------------正确提示调用方法------------------------------------------------------------
+CheckForm.js_right_show=function(elem){
+	if(document.getElementById("warn_"+elem.name)!=null){
+		document.getElementById("warn_"+elem.name).innerHTML=this.js_right_hint;
+	}
+	else if(document.getElementById("error_info")!=null){
+		document.getElementById("error_info").style.display="none";
+	}
+}
+//根据输入条件判断数字范围 elemInfoTitle:提示控件属性名称 alt:检查属性有效性关键字 elem:需要使用那个控件提示
+CheckForm.getAct=function(elemInfoTitle,elemValue,alt,warnElem){
+   var _otherCheck=alt.substring(alt.lastIndexOf("_int")+4,alt.length);
+   if(""==_otherCheck){
+		_otherCheck=alt.substring(alt.lastIndexOf("_double")+7,alt.length);
+   }
+   if(_otherCheck!=""){
+        if(_otherCheck.indexOf("(")>-1){
+             var _firstNum=_otherCheck.substring(_otherCheck.indexOf("(")+1,_otherCheck.indexOf("-"));
+             if(Number(elemValue)<=Number(_firstNum)){
+                  this.js_alertType(elemInfoTitle+"不能小于等于"+_firstNum,warnElem);
+                  return false;
+             }
+        }
+        else if(_otherCheck.indexOf("[")>-1){
+        	var _firstNum=_otherCheck.substring(_otherCheck.indexOf("[")+1,_otherCheck.indexOf("-"));
+        	if(Number(elemValue)<Number(_firstNum)){
+                  this.js_alertType(elemInfoTitle+"不能小于"+_firstNum,warnElem);
+                  return false;
+             }
+        }
+        if(_otherCheck.indexOf(")")>-1){
+        	var _lastNum=_otherCheck.substring(_otherCheck.indexOf("-")+1,_otherCheck.indexOf(")"));
+        	if(Number(elemValue)>=Number(_lastNum)){
+                  this.js_alertType(elemInfoTitle+"不能大于等于"+_lastNum,warnElem);
+                  return false;
+             }
+        }
+        else if(_otherCheck.indexOf("]")>-1){
+        	var _lastNum=_otherCheck.substring(_otherCheck.indexOf("-")+1,_otherCheck.indexOf("]"));
+        	if(Number(elemValue)>Number(_lastNum)){
+                  this.js_alertType(elemInfoTitle+"不能大于"+_lastNum,warnElem);
+                  return false;
+             }
+        }
+   }
+   return true;
+}
+//-----------------------------------------------------------------------------------------
+CheckForm.js_getLength=function(s){
+	 var temp=s.split("_");
+	 for(var i=0;i<temp.length;i++){
+		 if(temp[i].indexOf("-")>-1){
+			 var tempValue=temp[i].split("-");
+			 if(tempValue[0]=="" || tempValue[1]==""){
+				  alert("get min length error:"+s);
+			 }
+			 return tempValue[0]+","+tempValue[1];
+		 }
+	 }
+}
+//-----------------------------------------------------------------------------------------
+CheckForm.js_getMethod=function(s){
+	 var temp=s.split("_");
+	 for(var i=0;i<temp.length;i++){
+		 if(temp[i].indexOf("method:")>-1){
+			 var tempValue=temp[i].split(":");
+			 if(tempValue[1]==""){
+				  alert("get method error:"+s);
+			 }
+			 return tempValue[1];
+		 }
+	 }
+}
+//清除代码中的空格和html代码
+CheckForm.trimCode=function(str){
+   str=Check.trimHtml(str);
+   str=str.replace("&nbsp;/g","");
+   str=Check.replaceAll(str,"&nbsp;","");
+   str=str.replace(":","");
+   str=str.replace("：","");
+   str=Check.trimAll(str);
+   str=Check.trimAllGbk(str);
+   return str;
+}
+//-----------------------------------------------------------------------------------------
+CheckForm.js_checkPass=function(warnSpanId){
+	if(document.getElementById(warnSpanId)!=null){
+		document.getElementById(warnSpanId).innerHTML=this.js_right_hint;
+	}
+}
+//-----------------------------------------------------------------------------------------
+CheckForm.js_checkUnPass=function(str,warnSpanId){
+    //如果alert控件存在就使用alert控件，否则使用标准的alert
+    if(typeof(error) == 'undefined'){
+		alert(str);
+	}else{
+	    error(str);
+	}
+    if(document.getElementById(warnSpanId)!=null){
+		document.getElementById(warnSpanId).innerHTML=this.js_error_hint+str+this.js_error_hint_end;
+	}
+	else if(document.getElementById("error_info")!=null){
+		document.getElementById("error_info").style.display="block";
+		document.getElementById("error_info").innerHTML=this.js_error_hint+str+this.js_error_hint_end;
+	}
+}
+
+//动态给页面绑定检查方法
+CheckForm.formBind=function(formId){
+	var js_checkForm=document.getElementById(formId);
+	if(js_checkForm==null){
+		alert("formBind error,there is no form id is:"+formId);
+	}
+	for (var i=0; i<js_checkForm.elements.length; i++){
+		var elem=js_checkForm.elements[i];
+		var alt=elem.getAttribute("alt");
+		if(alt==null || alt==""){
+			continue;
+		}
+		else{
+		    elem.onblur = function(){
+				CheckForm.js_checkElemBlur(this);
+			}
+		}
+    }
+}
+window.onload = function() {
+	CheckForm.formBind("mainForm");
+}
+function btnSave(){
+	//if(!CheckForm.checkForm("mainForm"))return;
+	if(!CheckForm.js_checkElemBlur(document.mainForm.my_int))return false;
+	alert("ok");
+}
+</script>
+<body>
+<form name="mainForm" id="mainForm" method="post"  style="margin:0;padding:0">
+<table width="100%" border="0">
+<tr align="center">
+    <td width="33%" id="title_my_password">测试password</td>
+    <td width="33%"><input name="my_password" type="password" alt="my_password" value=""/></td>
+<td>
+<span id="warn_my_password"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_rePassword">测试RePassword</td>
+    <td width="33%"><input name="my_rePassword" type="password" alt="my_rePassword" value=""/></td>
+<td>
+<span id="warn_my_rePassword"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_radio">测试radio</td>
+    <td width="33%"><input type="radio" value="0" name="my_radio" checked="checked"/> AAA<input type="radio" value="1" name="my_radio" alt="my_radio"/> BBB</td>
+<td>
+<span id="warn_my_radio"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_check">测试check</td>
+    <td width="33%"><input type="checkbox" value="1" name="my_check"/> CCC<input type="checkbox" value="2" name="my_check"/> DDD<input type="checkbox" value="3" name="my_check" alt="my_check"/> EEE</td>
+<td>
+<span id="warn_my_check"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_select">测试select</td>
+    <td width="33%"><select name="my_select" id="my_select" alt="my_select">
+<option value="-1">请选择</option>
+<option value="1">AAAA</option>
+</select>
+</td>
+<td>
+<span id="warn_my_select"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_texearea">测试textarea</td>
+    <td width="33%"><textarea name="my_texearea" cols="30" rows="5" alt="my_texearea"></textarea></td>
+<td>
+<span id="warn_my_texearea"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_str">测试Str</td>
+    <td width="33%"><input name="my_str" value="" alt="my_str"/></td>
+<td>
+<span id="warn_my_str"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_int">测试Int</td>
+    <td width="33%"><input name="my_int"  alt="my_int_int_(0-10]" value=""/></td>
+<td>
+<span id="warn_my_int"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_double">测试Double</td>
+    <td width="33%"><input name="my_double" alt="my_double_double_(10-20]" value=""/></td>
+<td>
+<span id="warn_my_double"></span></td>
+</tr>
+<tr align="center">
+    <td width="33%" id="title_my_date">测试date</td>
+    <td width="33%"></td>
+<td>
+<span id="warn_my_date"></span></td>
+</tr>
+  <tr align=center>
+    <td colspan=3>
+        <a href="#" onclick="btnSave()"><img src="../_js/ico/btn_save.gif" border="0" alt="保存" align="absmiddle"/></a>&nbsp;&nbsp;&nbsp;
+        <a href="#" onclick="javascript:history.back()"><img src="../_js/ico/btn_back.gif" border="0" alt="返回" align="absmiddle"/></a>
+    </td>
+  </tr>
+</table>
+</form>
+</body>
+</html>

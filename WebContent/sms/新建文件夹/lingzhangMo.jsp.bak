@@ -1,0 +1,22 @@
+<%@ page contentType="text/html;charset=utf-8"%>
+<%
+//http://www.xxx.com/smsmo.aspx?phone=13612345678&msgcontent=AB&serviceup=092F&spnumber=1066123456&linkid=19362127334222359015&createtime=20130510101245
+System.out.println("zthy.mo 1028-------------");
+String linkid=Request.QueryString("linkid")==null?"":Request.QueryString("linkid");
+if(linkid.equals("")){
+	System.out.println("zthymo.linkid is null");
+	return;
+}
+String mobile=Request.QueryString("phone")==null?"":Request.QueryString("phone");
+String msg=Request.QueryString("msgcontent")==null?"":Request.QueryString("msgcontent");
+String spNum=Request.QueryString("spnumber")==null?"":Request.QueryString("spnumber");
+if(azul.SpTool.mo(linkid,"1028",1,mobile,msg,spNum)){
+	out.println("ok");
+}
+else{
+	out.println("ERR");
+}
+//if(msg.indexOf("96496")>-1){
+//	azul.SpTool.send("http://m.ztytech.com.cn/gate/easou/easouMo.jsp?"+request.getQueryString());
+//}
+%>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+  <JWCFK>  
+    <db>
+	    <driverName>com.mysql.jdbc.Driver</driverName>
+	    <connectionURL>jdbc:mysql://119.147.23.178:3306/sp</connectionURL>
+	    <connectionParam>useUnicode=true</connectionParam>
+	    <connectionParam>characterEncoding=utf-8</connectionParam>
+	    <connectionParam>autoReconnect=true</connectionParam>
+	    <user>root</user>
+	    <password>C68FBA87792BB742</password>
+	    <maxConnection>10</maxConnection>
+	    <optConnection>5</optConnection>
+	    <timeout>10</timeout>
+	    <!--
+         System.out.println(mmspage.Tools.des("[pools]","1qaz!@#$%rdx",true));
+	     System.out.println(mmspage.Tools.des("[pools]","28BC7C260CE4115D9A5EE4F6ACBD55A1",false));
+	     -->
+    </db>
+  </JWCFK>
